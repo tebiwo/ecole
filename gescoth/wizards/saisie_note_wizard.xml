@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record model="ir.ui.view" id="saisie_note_wizard_form_view">
+		<field name="name">Releve de paiement</field>
+		<field name="model">gescoth.saise.note.wizard</field>
+		<field name="arch" type="xml">
+			<form string="Impression du relevé de paiement">
+				<group>
+					<group>
+						<field name ="classe_id"/>
+						<field name="annee_scolaire"/>
+					</group>
+					<group>
+						<field name ="saison"/>
+						<field name="coeficient_id" widget="selection"/>
+					</group>
+				</group>
+				<footer>
+					<button name="confirmer_saisie" type="object" string="Valider" class="oe_highlight" />
+					<button special="cancel" string="Annuler"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="saisie_note_wizard_menu_action" model="ir.actions.act_window">
+		<field name="name">Saisie des notes</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">gescoth.saise.note.wizard</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="saisie_note_wizard_form_view"/>
+		<field name="target">new</field>
+	</record>
+
+	<menuitem 
+		id="saisie_note_wizard_menu" 
+		parent="gescoth_examen_menu" 
+		name="Saisie de notes"
+		sequence="15"
+		action="saisie_note_wizard_menu_action"
+		/>
+	</odoo>

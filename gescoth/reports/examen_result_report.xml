@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<report 
+		id = "impression_resultat_exament_report_view" 
+		model = "gescoth.professeur" 
+		string = "Resultat de l'examen de fin d'année" 
+		report_type = "qweb-pdf" 
+		name = "gescoth.impression_resultat_exament_report_report_view" 
+		file = "gescoth.impression_resultat_exament_report_report_view"
+		/>
+		<template id="impression_resultat_exament_report_report_view">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <style>
+                    </style>
+                    <div class="page">
+                        <h3>Résultat de fin d'année</h3>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Matricule</th>
+                                    <th>Nom et prénom(s)</th>
+                                    <th>Moyenne</th>
+                                    <th>Rang</th>
+                                    <th>Resultat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="resultats" t-as="resultat">
+                                    <tr>
+                                        <td><t t-esc="resultat['matricule']"/></td>
+                                        <td><t t-esc="resultat['eleve_id']"/></td>
+                                        <td><t t-esc="resultat['moyenne']"/></td>
+                                        <td><t t-esc="resultat['rang']"/></td>
+                                        <td><t t-esc="resultat['result']"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+		</template>
+	</odoo>

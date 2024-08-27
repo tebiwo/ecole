@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data> 
+        <record id="gescoth_eleve_inscription_menu_action" model="ir.actions.act_window">
+			<field name="name">Inscription</field>
+			<field name="res_model">gescoth.eleve.inscription</field>
+			<field name="view_mode">tree,form</field>
+			<field name="domain">[]</field>
+			<field name="help" type="html">
+				<p class="oe_view_noconten_create">
+					Vide
+				</p>
+			</field>
+		</record>
+    </data>  
+    <record id="gescoth_eleve_inscription_form" model="ir.ui.view">
+        <field name="name">gescoth.eleve.inscription.form</field>
+        <field name="model">gescoth.eleve.inscription</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="annee_scolaire_id"/>
+                            <field name="classe_id"/>
+                        </group>
+                        <group>
+                            <field name="eleve_id"/>
+                            <field name="date_inscription"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record> 
+    <record id="gescoth_eleve_inscription_tree" model="ir.ui.view">
+        <field name="name">gescoth.eleve.inscription.tree</field>
+        <field name="model">gescoth.eleve.inscription</field>
+        <field name="arch" type="xml">
+            <tree string="Inscription" create="false" delete="false" >
+                <field name="annee_scolaire_id"/>
+                <field name="classe_id"/>
+                <field name="eleve_id"/>
+                <field name="date_inscription"/>
+            </tree>
+        </field>
+    </record>
+
+    <menuitem
+        id="gescoth_eleve_inscription_inscription_menu"
+        name="Inscription"
+        action="gescoth_eleve_inscription_menu_action"
+        parent="gescoth_eleve_menu"
+        sequence="5"/>
+</odoo>

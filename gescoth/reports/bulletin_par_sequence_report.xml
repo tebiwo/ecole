@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<report
+		id = "bulletin_par_sequence_report_view"
+		model = "gescoth.bulletin.sequence"
+		string = "Bulletin par séquence"
+		report_type = "qweb-pdf"
+		name = "gescoth.eleve_bulletin_par_sequence_report"
+		file = "gescoth.eleve_bulletin_par_sequence_report"
+		paperformat ="paperformat_bulletin"
+		/>
+		<template id="eleve_bulletin_par_sequence_report">
+		<t t-call="web.basic_layout">
+			<t t-call="web.html_container">			
+				<t t-foreach="note_des_eleve" t-as="o">
+					<style type="text/css">
+						table{
+						border-radius: 1em;
+						}
+						.MyTable {
+						border-collapse:collapse;
+						border:1px solid black;
+						width: 100%;
+						font-size:12px;
+						}
+						thead{
+						border-color: lightgray
+						}
+						.MyTable td {
+						border:1px solid black;
+						margin-left: 150px;
+						}
+						.MyTable tr{
+							font-size:12px;
+							border-bottom : 0px;
+							border-top: 0px;
+						}
+						.MyTable th{
+						border:1px solid black;
+						}
+						.entete {
+						text-align: center;
+						}
+						.img{
+						width: 200px;
+						height: 150px;
+						}
+						.montant{
+						text-align: right;
+						}
+						.company{
+						font-size: 18px;
+						font-weight: bold;
+						}
+						.text-center{
+						text-align: center;
+						}
+						.rubrique{
+						font-size: 16;
+						}
+						.effectif{
+						width: 50%;
+						}
+						.text-center{
+							text-align:center;
+						}
+						.text-right{
+							text-align: right;
+						}
+						.nom_prenom{
+							width: 100%;
+							height: 27px;
+							border: 1px solid black;
+							border-radius: 25px;
+							text-align: center;
+							font-size:18px;
+						}
+						.page{
+							font-family: Arial;
+							font-size:12px;
+						}
+						.text-gras{
+							font-size: 15px;
+							font-weight: bold;
+						}
+					</style>
+					<div class="page">
+						<t t-if="entete">
+							<img t-attf-src="data:image/*;base64,{{entete}}" style="width: 100%; height:200px;"/>
+						</t>
+						<h2 style="text-align:center;">BULLETIN DE NOTES</h2>
+						<P style="text-align:center;"><t t-esc="saison_name"/></P>						
+						<t t-if="not est_un_strimestre">
+							<t t-if="saison == 's1'">
+							<t t-if="sequence_name == 'Séquence 1'">
+									<P style="text-align:center;"><t t-esc="'Séquence 1'"/></P>
+								</t>
+								<t t-else="">
+									<P style="text-align:center;"><t t-esc="'Séquence 2'"/></P>
+								</t>								
+							</t>	
+							<t t-if="saison == 's2'">
+							<t t-if="sequence_name == 'Séquence 1'">
+									<P style="text-align:center;"><t t-esc="'Séquence 3'"/></P>
+								</t>
+								<t t-else="">
+									<P style="text-align:center;"><t t-esc="'Séquence 4'"/></P>
+								</t>								
+							</t>	
+							<t t-if="saison == 's3'">
+							<t t-if="sequence_name == 'Séquence 1'">
+									<P style="text-align:center;"><t t-esc="'Séquence 5'"/></P>
+								</t>
+								<t t-else="">
+									<P style="text-align:center;"><t t-esc="'Séquence 6'"/></P>
+								</t>								
+							</t>					
+						</t>
+						<table class="MyTable effectif" style="margin-left: 45%; text-align: center;">
+							<thead>
+								<tr style="background-color:lightgray;">
+									<th>Matricule</th>
+									<th>Date de naissance</th>
+									<th>Lieu de naissance</th>
+									<th>Classe</th>
+									<th>Effectif</th>
+									<th>Sexe</th>
+									<th>Statut</th>
+									<th>Ann.scolaire</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><t t-esc="o['matricule']"/></td>
+									<td><t t-esc="o['date_naissance']" t-options='{"widget": "date","format": "dd/MM/yyyy"}'/></td>
+									<td><t t-esc="o['lieu_naissance']"/></td>
+									<td><span t-esc="o['classe']"/></td>
+									<td><span t-esc="effectif"/></td>
+									<td><span t-esc="o['sexe']"/></td>
+									<td><span t-esc="o['statut']"/></td>
+									<td><span t-esc="anneescolaire_id"/></td>
+								</tr>
+							</tbody>
+						</table><br/>
+						<h3 class="nom_prenom">Nom et prénom(s) : <span t-esc="o['nom_eleve']"/></h3>					
+						<table class="MyTable">
+							<thead>
+								<tr style="background-color:lightgray;">
+									<th>Matière</th><th>Note de la séquence</th><th>Coef</th>
+									<th>Total</th><th>Rang</th><th>Professeur</th><th>Appréciation</th><th>Signature</th>
+								</tr>
+							</thead>
+							<tbody>
+								<t t-foreach="groupe_matieres" t-as="groupe_id">
+
+									<t t-set="sous_total_note" t-value="0"/>
+									<t t-set="sous_total_coef" t-value="0"/>
+
+									<t t-foreach="o['notes']" t-as="note">
+										<t t-if="groupe_id['id'] == note['groupe_id']">
+
+											<t t-if="sequence == 'sq1'" t-set="sous_total_note" t-value="sous_total_note + note['total_s1']"/>
+											<t t-if="sequence == 'sq2'" t-set="sous_total_note" t-value="sous_total_note + note['total_s2']"/>
+											<t t-set="sous_total_coef" t-value="sous_total_coef + note['coef']"/>
+
+											<t t-if="note['type_matiere'] != 'sport'">
+												<tr>
+													<td width="20%" class="text-gras">
+														<t t-esc="note['matiere']"/>
+													</td>
+													<td t-if="sequence == 'sq1'" class="text-center" width="5%">
+														<t t-if="note['s1_est_compose']">
+															<span t-esc="round(note['sequence1'],2)" />
+														</t>
+														<t t-else="">
+															-
+														</t>
+													</td>
+													<td t-if="sequence == 'sq2'" class="text-center" width="5%">
+														<t t-if="note['s2_est_compose']">
+															<span t-esc="round(note['sequence2'],2)" />
+														</t>
+														<t t-else="">
+															-
+														</t>
+													</td>
+													
+													<td class="text-center"><span t-esc="note['coef']" /></td>
+													<td t-if="sequence == 'sq1'" class="text-center">
+														<t t-if="note['s1_est_compose']">
+															<span t-esc="note['total_s1']" />
+														</t>
+														<t t-else="">
+															-
+														</t>
+													</td>
+													<td t-if="sequence == 'sq2'" class="text-center">
+														<t t-if="note['s2_est_compose']">
+															<span t-esc="note['total_s2']" />
+														</t>
+														<t t-else="">
+															-
+														</t>
+													</td>
+													<td t-if="sequence == 'sq1'" class="text-center">
+														<t t-if="note['s1_est_compose']">
+															<span t-esc="note['rang_s1']" />
+														</t>
+														<t t-else="">
+															-
+														</t>
+													</td>
+													<td t-if="sequence == 'sq2'" class="text-center">
+														<t t-if="note['s2_est_compose']">
+															<span t-esc="note['rang_s2']" />
+														</t>
+														<t t-else="">
+															-
+														</t>
+													</td>
+													<td class="text-center"><span t-esc="note['prof']" /></td>
+													<td t-if="sequence == 'sq1'" class="text-center">
+														<t t-if="note['s1_est_compose']">
+															<span t-esc="note['appreciation_s1']" />
+														</t>
+														<t t-else="">
+															-
+														</t>
+													</td>
+													<td t-if="sequence == 'sq2'" class="text-center">
+														<t t-if="note['s2_est_compose']">
+															<span t-esc="note['appreciation_s2']" />
+														</t>
+														<t t-else="">
+															-
+														</t>
+													</td>
+													<td></td>
+												</tr>
+											</t>
+
+											<t t-if="note['type_matiere'] == 'sport' and o['Apt_sport'] == True">
+												<tr>
+													<td width="20%" class="text-gras">
+														<t t-esc="note['matiere']"/>
+													</td>
+													<td t-if="sequence == 'sq1'" class="text-center" width="5%"><span t-esc="round(note['sequence1'],2)" /></td>
+													<td t-if="sequence == 'sq2'" class="text-center" width="5%"><span t-esc="round(note['sequence2'],2)" /></td>
+													<!-- <td class="text-center" width="5%"><span t-esc="round(note['moyenne'],2)" /></td> -->
+													<td class="text-center"><span t-esc="note['coef']" /></td>
+													<td t-if="sequence == 'sq1'" class="text-center"><span t-esc="note['total_s1']" /></td>
+													<td t-if="sequence == 'sq2'" class="text-center"><span t-esc="note['total_s2']" /></td>
+													<td t-if="sequence == 'sq1'" class="text-center"><span t-esc="note['rang_s1']" /></td>
+													<td t-if="sequence == 'sq2'" class="text-center"><span t-esc="note['rang_s2']" /></td>
+													<td class="text-center"><span t-esc="note['prof']" /></td>
+													<td t-if="sequence == 'sq1'" class="text-center"><span t-esc="note['appreciation_s1']" /></td>
+													<td t-if="sequence == 'sq2'" class="text-center"><span t-esc="note['appreciation_s2']" /></td>
+													<td></td>
+												</tr>
+											</t>
+											<t t-if="note['type_matiere'] == 'sport' and o['Apt_sport'] != True">
+												<tr>
+													<td width="20%" class="text-gras">
+														<t t-esc="note['matiere']"/>
+													</td>
+													<td class="text-center" width="5%">-</td>
+													<td class="text-center" width="5%">-</td>
+													<td class="text-center" width="5%">-</td>
+													<td class="text-center">-</td>
+													<td class="text-center">-</td>
+													<td class="text-center">-</td>
+													<td class="text-center"><span t-esc="note['prof']" /></td>
+													<td class="text-center">Inapt(e)</td>
+													<td class="text-center"></td>
+												</tr>
+											</t>
+										</t>
+									</t>
+									<tr style="background-color:lightgray; font-size:15px; text-align:center;" >
+										<td colspan="3"> Total <t t-esc="groupe_id['groupe_name']"/></td>
+										<td colspan="1"><t t-esc="round(sous_total_note,2)"/></td>
+										<td colspan="5">Moyenne = <t t-esc="round((sous_total_note / sous_total_coef),2)"/></td>
+									</tr>
+								</t>
+								<tr>
+									<th colspan="2" style="background-color:lightgray;" class="text-right">Total:</th>
+									<th><span t-esc="o['total_coef']" /></th>
+									<th t-if="sequence == 'sq1'"><span t-esc="o['total_moyenne_s1']" /></th>
+									<th t-if="sequence == 'sq2'"><span t-esc="o['total_moyenne_s2']" /></th>
+									<th colspan="5" style="background-color:lightgray;"></th>
+								</tr>
+							</tbody>
+						</table>
+						<br/>
+						<table class="MyTable">
+							<tr>
+								<th t-if="sequence == 'sq1'" style="text-align:right; background-color:lightgray;">Moyenne : </th><th t-if="sequence == 'sq1'" width="10%" ><span t-esc="o['moyenne_sur_vingt_s1']" /></th>
+								<th t-if="sequence == 'sq2'" style="text-align:right; background-color:lightgray;">Moyenne : </th><th t-if="sequence == 'sq2'" width="10%" ><span t-esc="o['moyenne_sur_vingt_s2']" /></th>								
+								<th width="20%" rowspan="6">-</th>
+								<th colspan="5" width="20%" style="background-color:lightgray;">Conduit/Assiduité</th><th style="background-color:lightgray;">Observation</th>
+							</tr>
+							<tr>
+								<th t-if="sequence == 'sq1'" width="20%" style="text-align:right;">Rang : </th><th t-if="sequence == 'sq1'"><span t-esc="o['rang_s1']" /></th>
+								<th t-if="sequence == 'sq2'" width="20%" style="text-align:right;">Rang : </th><th t-if="sequence == 'sq2'"><span t-esc="o['rang_s2']" /></th>
+								<!-- <th width="20%">-</th> -->
+								<th white="10%">Absences</th>
+								<td colspan="4" class="text-center" width="15%"><t t-esc="o['conduite']['absences']"/></td>
+								<th width="15%"></th>
+							</tr>
+							<tr>
+								<th t-if="sequence == 'sq1'" white="20%" style="text-align:right;">Moy. maxi : </th><td t-if="sequence == 'sq1'" class="text-center" width="10%" ><span t-esc="moyMaxi_s1"  /></td>
+								<th t-if="sequence == 'sq2'" white="20%" style="text-align:right;">Moy. maxi : </th><td t-if="sequence == 'sq2'" class="text-center" width="10%" ><span t-esc="moyMaxi_s2"  /></td>
+								<!-- <th width="20%">-</th> -->
+								<th white="10%">Retards</th>
+								<td colspan="4" class="text-center" width="15%"><t t-esc="o['conduite']['retard']"/></td>
+								<th width="15%"></th>
+							</tr>
+
+							<tr>
+								<th t-if="sequence == 'sq1'" white="20%" style="text-align:right;">Moy. mini : </th><td t-if="sequence == 'sq1'" class="text-center" width="10%" ><span t-esc="moyMini_s1" /></td>
+								<th t-if="sequence == 'sq2'" white="20%" style="text-align:right;">Moy. mini : </th><td t-if="sequence == 'sq2'" class="text-center" width="10%" ><span t-esc="moyMini_s2" /></td>
+								<!-- <th width="20%">-</th> -->
+								<th white="10%">Punitions</th>
+								<td colspan="4" class="text-center" width="15%"><t t-esc="o['conduite']['punition']"/></td>
+								<th width="15%"></th>
+							</tr>
+							<tr>
+								<th t-if="sequence == 'sq1'" white="20%" style="text-align:right;">Moy. gle : </th><td t-if="sequence == 'sq1'" class="text-center" width="10%" ><span t-esc="moyGene_s1" /></td>
+								<th t-if="sequence == 'sq2'" white="20%" style="text-align:right;">Moy. gle : </th><td t-if="sequence == 'sq2'" class="text-center" width="10%" ><span t-esc="moyGene_s2" /></td>
+								<!-- <th width="20%">-</th> -->
+								<th colspan="6" style="background-color:lightgray;"></th>
+							</tr>
+						</table>
+						<br/>
+						<table class="MyTable">
+							<tr>
+								<th width="55%" style="background-color:lightgray;" colspan="2">Appréciation du travail</th>
+								<th width="45%" style="background-color:lightgray;" >Observation et decision du conseil</th>
+							</tr>
+							<tr>
+								<th style="text-align:right;">Tableau d'Excellence : </th>
+								<th width="10%" ><span t-esc="o['tableau_excellence']" /></th>
+								<th></th>
+							</tr>
+							<tr>
+								<th style="text-align:right;">Tableau d'Honneur + Félicitations : </th>
+								<th t-if="sequence == 'sq1'" ><span t-esc="o['tableau_honneur_felicitation_s1']" /></th>
+								<th t-if="sequence == 'sq2'"><span t-esc="o['tableau_honneur_felicitation_s2']" /></th>
+								<th></th>
+							</tr>
+							<tr>
+								<th style="text-align:right;">Tableau d'Honneur + Encouragements : </th>
+								<th t-if="sequence == 'sq1'"><span t-esc="o['tableau_honneur_encouragement_s1']" /></th>
+								<th t-if="sequence == 'sq2'"><span t-esc="o['tableau_honneur_encouragement_s2']" /></th>
+								<th></th>
+							</tr>
+							<tr>
+								<th style="text-align:right;">Tableau d'Honneur : </th>
+								<th t-if="sequence == 'sq1'"><span t-esc="o['tableau_honneur_s1']" /></th>
+								<th t-if="sequence == 'sq2'"><span t-esc="o['tableau_honneur_s2']" /></th>
+								<th></th>
+							</tr>
+							<tr>
+								<th style="text-align:right;">Avertissement : </th>
+								<th t-if="sequence == 'sq1'"><span t-esc="o['avertissement_s1']" /></th>
+								<th t-if="sequence == 'sq2'"><span t-esc="o['avertissement_s2']" /></th>
+								<th></th>
+							</tr>
+							<tr>
+								<th style="text-align:right;">Blâme : </th>
+								<th t-if="sequence == 'sq1'"><span t-esc="o['blame_s1']" /></th>
+								<th t-if="sequence == 'sq2'"><span t-esc="o['blame_s2']" /></th>
+								<th></th>
+							</tr>
+						</table>
+
+						<br/>
+						<p style="text-align:center;" class="text-gras"><i>Fait à <span t-esc="ville" />, le <span t-esc="date_signature" /> </i></p>
+
+						<table style="text-align: center; border-color:white;" width="100%">
+							<tr>
+								<td>Professeur titulaire</td><td width="40%"></td><td><span t-esc="titre_chef_etablissement"/></td>
+							</tr>
+							<tr height="80">
+								<td></td><td widtd="40%"></td><td></td>
+							</tr>
+							<tr>
+								<td><span class="text-gras" t-esc="prof" /></td>
+								<td width="40%"></td><td><span class="text-gras" t-esc="chef_etablissement" /></td>
+							</tr>
+						</table>
+						<!--  -->
+						<p style="page-break-before:always;"></p>
+						<!-- <p style="page-break-after:always;"></p> -->
+					</div>
+				</t>
+				</t>
+			</t>
+		</template>
+	</odoo>

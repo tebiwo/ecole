@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record model="ir.ui.view" id="examen_deliberation_form_view">
+		<field name="name">impression examen_deliberation scolaire</field>
+		<field name="model">gescoth.examen.deliberation</field>
+		<field name="arch" type="xml">
+			<form string="Délibération">
+				<group>
+					<group>
+						<field name ="classe_id"/>
+						<field name="moyenne"/>
+						<field name="annee_scolaire_en_cours_id"/>
+					</group>
+					<group>
+						<field name="nombre"/>
+						<field name ="annee_scolaire_id"/>
+						<field name="classe_sup_id"/>
+						<field name="ordre"/>
+					</group>
+					<field name="result_ids"/>
+				</group>
+				<footer>
+					<button name="deliberer" type="object" icon="fa-check" string="Valider le resultat" class="oe_highlight" />
+					<button name="imprimer_resultat" type="object" string="Imprimer" icon="fa-print" class="oe_highlight"/>
+					<button special="cancel" string="Annuler"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="examen_deliberation_sclaire" model="ir.actions.act_window">
+		<field name="name">Déliberation scolaire</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">gescoth.examen.deliberation</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="examen_deliberation_form_view"/>
+		<field name="target">new</field>
+	</record>
+
+	<menuitem 
+		id="examen_deliberation_sclaire_menu" 
+		parent="gescoth_examen_menu" 
+		name="Délibération"
+        sequence="105"
+		action="examen_deliberation_sclaire"
+	/>
+	/>
+</odoo>

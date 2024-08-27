@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record model="ir.ui.view" id="gescoth_assistant_inscription_eleve_form_view">
+		<field name="name">Inscription des élèves</field>
+		<field name="model">gescoth.assistant.inscription</field>
+		<field name="arch" type="xml">
+			<form string="Réatribution des classe">
+				<group>
+					<group>
+						<field name ="classe_id"/>
+                        <field name="annee_scolaire_id"/>
+					</group>
+					<field name="eleve_ids"/>
+				</group>
+				<footer>
+					<button name="inscrire_les_eleve" type="object" string="Valider" icon="fa-print" class="oe_highlight" />
+					<button special="cancel" string="Annuler"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="assistant_inscription_des_eleve" model="ir.actions.act_window">
+		<field name="name">Inscription des élèves</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">gescoth.assistant.inscription</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="gescoth_assistant_inscription_eleve_form_view"/>
+		<field name="target">new</field>
+	</record>
+
+	<menuitem 
+		id="assistant_inscription_des_eleve_menu" 
+		parent="gescoth_eleve_menu" 
+		name="Assistant inscription des élèves"
+		action="assistant_inscription_des_eleve"
+	/>
+</odoo>

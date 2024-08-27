@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record model="ir.ui.view" id="cloturer_note_form_view">
+		<field name="name">Clôturer les notes</field>
+		<field name="model">gescoth.cloturer.note</field>
+		<field name="arch" type="xml">
+			<form string="Clôturer les notes">
+				<group>
+					<group>
+						<field name="classe_ids" 
+                        widget="many2many_tags"
+                        />
+                        <field name="annee_scolaire"/>
+					</group>
+					<group>
+						<field name="saison"/>
+					</group>
+                    <field name="note_ids"/>
+				</group>
+				<footer>
+					<button name="cloturer_note" type="object" string="Valider" class="oe_highlight" />
+					<button special="cancel" string="Annuler"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="gescoth_cloturere_note" model="ir.actions.act_window">
+		<field name="name">Clôturer les notes</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">gescoth.cloturer.note</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="cloturer_note_form_view"/>
+		<field name="target">new</field>
+	</record>
+
+	<menuitem 
+		id="impression_carte_scolaire_menu" 
+		parent="gescoth_examen_menu" 
+		name="Clôturer les notes"
+        sequence="105"
+		action="gescoth_cloturere_note"
+	/>
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record model="ir.ui.view" id="gescoth_bulletin_annuel_form_view">
+		<field name="name">Bulletin annuel 6 séquences</field>
+		<field name="model">gescoth.bulletin.annuel</field>
+		<field name="arch" type="xml">
+			<form string="Réatribution des classe">
+				<group>
+					<group>
+						<field name ="classe_id"/>
+						<field name="eleve_id"/>
+					</group>
+					<group>
+						<field name ="annee_scolaire_id"/>
+						<field name="date_signature"/>
+					</group>
+				</group>
+				<footer>
+					<button name="imprimer_bulletin_annuel" type="object" string="Imprimer" icon="fa-print" class="oe_highlight" />
+					<button special="cancel" string="Annuler"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="gescoth_bulletin_annuel" model="ir.actions.act_window">
+		<field name="name">Bulletin annuel 6 séquences</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">gescoth.bulletin.annuel</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="gescoth_bulletin_annuel_form_view"/>
+		<field name="target">new</field>
+	</record>
+
+	<menuitem 
+		id="gescoth_bulletin_annuel_menu" 
+		parent="gescoth_examen_menu" 
+		name="Bulletin annuel 6 sequences"
+        sequence="102"
+		action="gescoth_bulletin_annuel"
+	/>
+</odoo>

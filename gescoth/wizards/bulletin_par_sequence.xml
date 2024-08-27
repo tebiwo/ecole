@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record model="ir.ui.view" id="gescoth_bulletin_par_senquence_form_view">
+		<field name="name">Bulletin par séquence</field>
+		<field name="model">gescoth.bulletin.sequence</field>
+		<field name="arch" type="xml">
+			<form string="Réatribution des classe">
+				<group>
+					<group>
+						<field name ="classe_id"/>
+                        <field name="annee_scolaire_id"/>
+						<field name="type_de_saison"/>
+					</group>
+                    <group>
+						<field name ="saison"/>
+                        <field name ="sequence"/>
+						<field name="est_un_strimestre"/>
+					</group>
+				</group>
+				<footer>
+					<button name="imprimer_bulletin_sequence" type="object" string="Imprimer" icon="fa-print" class="oe_highlight" />
+					<button special="cancel" string="Annuler"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="th_impression_bulletin_par_sequence" model="ir.actions.act_window">
+		<field name="name">Bulletin par séquence</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">gescoth.bulletin.sequence</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="gescoth_bulletin_par_senquence_form_view"/>
+		<field name="target">new</field>
+	</record>
+
+	<menuitem 
+		id="th_impression_bulletin_par_sequence_menu" 
+		parent="gescoth_examen_menu" 
+		name="Bulletin par séquence"
+        sequence="100"
+		action="th_impression_bulletin_par_sequence"
+	/>
+</odoo>
